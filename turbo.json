@@ -4,7 +4,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".output/**", ".tanstack/**"]
+      "outputs": ["dist/**", ".output/**", ".tanstack/**", "src/routeTree.gen.ts"]
     },
     "dev": {
       "cache": false,
@@ -14,11 +14,11 @@
       "dependsOn": ["^build"]
     },
     "test": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "build"],
       "outputs": ["coverage/**"]
     },
     "typecheck": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build", "build"]
     }
   }
 }
