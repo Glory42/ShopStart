@@ -15,9 +15,6 @@
     "prisma:deploy": "prisma migrate deploy",
     "seed": "bun run prisma/seed.ts"
   },
-  "prisma": {
-    "seed": "bun run prisma/seed.ts"
-  },
   "jest": {
     "moduleFileExtensions": ["js", "json", "ts"],
     "rootDir": "src",
@@ -42,7 +39,9 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/swagger": "^8.1.0",
-    "@prisma/client": "^6.1.0",
+    "@prisma/client": "^7.9.1",
+    "@prisma/adapter-pg": "^7.9.1",
+    "pg": "^8.23.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "bcrypt": "^6.0.0",
@@ -61,9 +60,10 @@
     "@types/jest": "^29.5.14",
     "@types/node": "^24.9.1",
     "@types/passport-jwt": "^4.0.1",
+    "@types/pg": "^8.11.10",
     "@types/supertest": "^6.0.2",
     "jest": "^29.7.0",
-    "prisma": "^6.1.0",
+    "prisma": "^7.9.1",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
     "typescript": "^5.9.3"
