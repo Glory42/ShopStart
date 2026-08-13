@@ -6,8 +6,8 @@ import {
 } from "@nestjs/common";
 import type { Prisma } from "@prisma/client";
 import { ORDER_STATUS_TRANSITIONS, type CheckoutInput, type OrderStatus } from "@shopstart/types";
-import { PrismaService } from "../prisma/prisma.service";
-import { decimalToNumber } from "../common/decimal";
+import { PrismaService } from "../../infrastructure/prisma/prisma.service";
+import { decimalToNumber } from "../../common/decimal";
 import { CartService } from "../cart/cart.service";
 import { AddressesService } from "../addresses/addresses.service";
 

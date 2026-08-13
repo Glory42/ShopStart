@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import type { CreateCategoryInput, UpdateCategoryInput } from "@shopstart/types";
-import { PrismaService } from "../prisma/prisma.service";
+import { PrismaService } from "../../infrastructure/prisma/prisma.service";
 
 @Injectable()
 export class CategoriesService {

@@ -16,9 +16,9 @@ import {
   type CreateCategoryInput,
   type UpdateCategoryInput,
 } from "@shopstart/types";
-import { ZodValidationPipe } from "../common/pipes/zod-validation.pipe";
-import { Roles } from "../common/decorators/roles.decorator";
-import { RolesGuard } from "../common/guards/roles.guard";
+import { ZodValidationPipe } from "../../common/pipes/zod-validation.pipe";
+import { Roles } from "../../common/decorators/roles.decorator";
+import { RolesGuard } from "../../common/guards/roles.guard";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { CategoriesService } from "./categories.service";
 

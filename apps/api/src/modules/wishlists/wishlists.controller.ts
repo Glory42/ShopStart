@@ -6,8 +6,8 @@ import {
   type AddToWishlistInput,
   type CreateWishlistInput,
 } from "@shopstart/types";
-import { ZodValidationPipe } from "../common/pipes/zod-validation.pipe";
-import { CurrentUser } from "../common/decorators/current-user.decorator";
+import { ZodValidationPipe } from "../../common/pipes/zod-validation.pipe";
+import { CurrentUser } from "../../common/decorators/current-user.decorator";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import type { AuthenticatedUser } from "../auth/auth.types";
 import { WishlistsService } from "./wishlists.service";

@@ -1,6 +1,6 @@
 import { ConflictException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import type { AddToWishlistInput, CreateWishlistInput } from "@shopstart/types";
-import { PrismaService } from "../prisma/prisma.service";
+import { PrismaService } from "../../infrastructure/prisma/prisma.service";
 
 @Injectable()
 export class WishlistsService {

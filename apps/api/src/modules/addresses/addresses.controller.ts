@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { createAddressSchema, type CreateAddressInput } from "@shopstart/types";
-import { ZodValidationPipe } from "../common/pipes/zod-validation.pipe";
-import { CurrentUser } from "../common/decorators/current-user.decorator";
+import { ZodValidationPipe } from "../../common/pipes/zod-validation.pipe";
+import { CurrentUser } from "../../common/decorators/current-user.decorator";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import type { AuthenticatedUser } from "../auth/auth.types";
 import { AddressesService } from "./addresses.service";

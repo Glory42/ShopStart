@@ -7,7 +7,7 @@ import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import * as bcrypt from "bcrypt";
 import type { LoginInput, RegisterInput } from "@shopstart/types";
-import { PrismaService } from "../prisma/prisma.service";
+import { PrismaService } from "../../infrastructure/prisma/prisma.service";
 import type {
   AccessTokenPayload,
   AuthenticatedUser,

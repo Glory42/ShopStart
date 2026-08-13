@@ -5,8 +5,8 @@ import type {
   ProductQuery,
   UpdateProductInput,
 } from "@shopstart/types";
-import { PrismaService } from "../prisma/prisma.service";
-import { decimalToNumber } from "../common/decimal";
+import { PrismaService } from "../../infrastructure/prisma/prisma.service";
+import { decimalToNumber } from "../../common/decimal";
 
 @Injectable()
 export class ProductsService {
