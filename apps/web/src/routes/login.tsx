@@ -54,7 +54,7 @@ function LoginPage() {
           Log in
         </Button>
         {login.isError && (
-          <p className="text-[13px] text-red-600">{(login.error as Error).message}</p>
+          <p className="text-[13px] text-danger">{(login.error as Error).message}</p>
         )}
       </form>
       <p className="mt-6 text-center text-[14px] text-graphite">

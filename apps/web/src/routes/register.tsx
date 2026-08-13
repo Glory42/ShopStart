@@ -70,7 +70,7 @@ function RegisterPage() {
           Create account
         </Button>
         {register.isError && (
-          <p className="text-[13px] text-red-600">{(register.error as Error).message}</p>
+          <p className="text-[13px] text-danger">{(register.error as Error).message}</p>
         )}
       </form>
       <p className="mt-6 text-center text-[14px] text-graphite">

@@ -4,7 +4,7 @@ import { cn } from "../lib/cn";
 export type ButtonVariant = "primary" | "dark" | "secondary" | "ghost";
 
 const base =
-  "inline-flex items-center justify-center rounded-full text-[15px] font-medium transition-all duration-200 disabled:opacity-40 disabled:pointer-events-none whitespace-nowrap";
+  "inline-flex items-center justify-center rounded-full text-[15px] font-medium transition-all duration-200 disabled:opacity-40 disabled:pointer-events-none whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas";
 
 const variants: Record<ButtonVariant, string> = {
   primary: "bg-accent text-white px-6 py-3 hover:bg-accent-hover active:scale-[0.98]",

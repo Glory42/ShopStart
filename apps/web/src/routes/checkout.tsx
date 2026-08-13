@@ -161,7 +161,7 @@ function CheckoutPage() {
             Place order
           </Button>
           {placeOrder.isError && (
-            <p className="mt-3 text-[13px] text-red-600">
+            <p className="mt-3 text-[13px] text-danger">
               {(placeOrder.error as Error).message}
             </p>
           )}
