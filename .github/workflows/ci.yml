@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: shopstart
+          POSTGRES_PASSWORD: shopstart
+          POSTGRES_DB: shopstart
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U shopstart"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: "postgresql://shopstart:shopstart@localhost:5432/shopstart"
+      JWT_ACCESS_SECRET: "ci-access-secret-not-for-production"
+      JWT_REFRESH_SECRET: "ci-refresh-secret-not-for-production"
+      WEB_ORIGIN: "http://localhost:3000"
+      ADMIN_ORIGIN: "http://localhost:3001"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: bun run --cwd apps/api prisma:generate
+
+      - name: Run database migrations
+        run: bun run --cwd apps/api prisma:deploy
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Test
+        run: bun run test
+
+      - name: Build
+        run: bun run build

@@ -1,51 +1,43 @@
-# Contributing to AI SaaS Generator
+# Contributing to shopstart
 
-First off, thanks for taking the time to contribute! 🎉
+Thanks for taking the time to contribute!
 
-We welcome contributions from everyone. Whether you're fixing a bug, improving documentation, or adding a new feature, your help is appreciated.
+## Development workflow
 
-## Development Workflow
+1. **Fork the repository** to your own GitHub account.
+2. **Clone the project** and run `bun install` at the repo root.
+3. **Create a branch** for your fix or feature:
+   ```bash
+   git checkout -b feat/amazing-new-feature
+   # or
+   git checkout -b fix/annoying-bug
+   ```
+4. **Make your changes** and test them locally (`bun run dev`, `bun run test`).
+5. **Commit** using [Conventional Commits](https://www.conventionalcommits.org/):
+   ```bash
+   git commit -m "feat: add support for saved payment methods"
+   ```
+6. **Push your branch** and open a Pull Request.
 
-1.  **Fork the repository** to your own GitHub account.
-2.  **Clone the project** to your machine.
-3.  **Create a branch** for your fix or feature:
-    ```bash
-    git checkout -b feat/amazing-new-feature
-    # or
-    git checkout -b fix/annoying-bug
-    ```
-4.  **Make your changes** and test them locally.
-5.  **Commit your changes** using descriptive commit messages (Conventional Commits preferred):
-    ```bash
-    git commit -m "feat: add support for dark mode"
-    ```
-6.  **Push to your branch**:
-    ```bash
-    git push origin feat/amazing-new-feature
-    ```
-7.  **Open a Pull Request** (PR) on the main repository.
+## Code style & standards
 
-## Code Style & Standards
+- **Runtime:** [Bun](https://bun.sh/). Please don't commit `package-lock.json` or `yarn.lock`.
+- **TypeScript:** strict typing throughout. Avoid `any` unless there's a real reason.
+- **Domain terms:** if a change touches the domain model (Cart, Order, Review, etc.),
+  read [`CONTEXT.md`](./CONTEXT.md) first and update it if the model changes.
+- **Architecture decisions:** hard-to-reverse, non-obvious technical choices belong in
+  [`docs/adr/`](./docs/adr) — see existing ADRs for the format.
 
-- **Runtime:** We use [Nodejs](https://nodejs.org/). Please do not use `npm` or `yarn` lockfiles.
-- **TypeScript:** Stick to strict typing where possible. Avoid `any` unless absolutely necessary (e.g., experimental AI SDK features).
-- **Formatting:** Code should be clean and readable. 
+## Before submitting a PR
 
-## Testing
+- `bun run lint`, `bun run typecheck`, and `bun run test` all pass.
+- `bun run build` succeeds for all three apps.
+- The relevant flow works end-to-end locally (register → browse → cart → checkout,
+  or the admin equivalent).
 
-Before submitting a PR, please ensure:
-- The server starts without errors (`npm run dev`).
-- The basic flows (Auth -> Upload -> Generate) work as expected.
+## Reporting bugs
 
-## Reporting Bugs
+Please include steps to reproduce, expected vs. actual behavior, and any relevant
+log output.
 
-If you find a bug, please create an issue including:
-- Steps to reproduce.
-- Expected vs. actual behavior.
-- Screenshots or log snippets if applicable.
-
-## Contact
-
-If you have any questions, feel free to reach out to me at `me@gorkemkaryol.dev`.
-
-Happy Coding! 🚀
+Happy coding!
