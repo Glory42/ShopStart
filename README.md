@@ -4,7 +4,7 @@
 ![TanStack](https://img.shields.io/badge/TanStack-FF4154?style=for-the-badge&logo=tanstack&logoColor=white)
 ![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)
 ![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
-![License](https://img.shields.io/github/license/Glory42/E-Commerce-API?style=for-the-badge)
+![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)
 
 **shopstart** is a clone-and-build e-commerce site template. It's not a store — it's a
 starting point: a working storefront, admin dashboard, and API with the boring parts
@@ -30,13 +30,16 @@ requires, how Order status transitions work, etc).
 ```
 shopstart/
 ├── apps/
-│   ├── api/      # NestJS REST API (Prisma + PostgreSQL)
-│   ├── web/      # TanStack Start storefront (SSR)
-│   └── admin/    # TanStack Router admin dashboard (SPA)
+│   ├── api/            # NestJS REST API (Prisma + PostgreSQL)
+│   ├── web/            # TanStack Start storefront (SSR)
+│   │   └── design.md   # Locked storefront design system — read before UI changes
+│   └── admin/          # TanStack Router admin dashboard (SPA)
 ├── packages/
-│   └── types/    # Shared Zod schemas + TS types, used by all three apps
-├── docs/adr/     # Architecture decision records
-└── CONTEXT.md    # Domain glossary
+│   └── types/          # Shared Zod schemas + TS types, used by all three apps
+├── docs/adr/           # Architecture decision records
+├── CONTEXT.md          # Domain glossary
+├── ROADMAP.md          # What's solid, what's thin, what's deliberately not planned
+└── CONTRIBUTING.md     # Development workflow, code style, testing conventions
 ```
 
 ## Getting started
@@ -111,9 +114,37 @@ specific store's needs:
 
 ## Testing
 
-- `apps/api` — Jest (`bun run --cwd apps/api test`)
+- `apps/api` — Jest unit tests (`bun run --cwd apps/api test`), one `*.spec.ts` per service, `PrismaService` mocked at the DB boundary.
 - `apps/web`, `apps/admin`, `packages/*` — Vitest (`bun run --cwd apps/web test`)
 - `bun run test` runs all of the above via Turborepo
+
+### API e2e tests
+
+`apps/api/test/*.e2e-spec.ts` boot the real Nest app (real guards, real cookies, real Zod
+validation) against a real Postgres database — this is what proves the checkout stock guard
+actually prevents overselling under concurrent requests, which a mocked-Prisma unit test
+structurally cannot prove.
+
+One-time setup (assumes `docker-compose up -d` is already running the dev Postgres):
+
+```bash
+docker compose exec postgres psql -U shopstart -d shopstart -c "CREATE DATABASE shopstart_test"
+cp apps/api/.env.test.example apps/api/.env.test
+cd apps/api && DATABASE_URL="postgresql://shopstart:shopstart@localhost:5432/shopstart_test" bunx prisma migrate deploy
+```
+
+Then: `bun run --cwd apps/api test:e2e`. e2e tests run with `maxWorkers: 1` (see
+`apps/api/test/jest-e2e.json`) since every spec file truncates and reuses the same shared
+database — running spec files in parallel would race.
+
+See [`docs/adr/0006-testing-strategy.md`](./docs/adr/0006-testing-strategy.md) for why
+the suite is split into unit/e2e/component layers rather than one style throughout.
+
+## Contributing
+
+See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the development workflow, code style,
+and testing conventions. [`ROADMAP.md`](./ROADMAP.md) lists what's solid, what's thin,
+and what's deliberately out of scope — a good place to check before starting new work.
 
 ## License
 
