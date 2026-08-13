@@ -1,0 +1,3 @@
+# Shopstart is a single-tenant boilerplate, not a multi-tenant platform
+
+Shopstart is a template repo an adopter clones, renames, and deploys as their own store — one deployment serves one store. We considered a multi-tenant white-label design (one deployment serving many stores by domain/tenant), but rejected it: it would require tenant isolation in the schema, tenant-aware auth, and per-tenant config resolution throughout, none of which a typical adopter needs, and all of which would need to be understood before they could safely remove it. A boilerplate should be easy to read start-to-end; multi-tenancy machinery works against that.
