@@ -77,13 +77,6 @@ bun run db:migrate
 bun run seed
 ```
 
-> **Don't run `bunx prisma ...` / `npx prisma ...` directly** — that fetches whatever
-> the latest published Prisma version is (currently a 7.x that requires driver
-> adapters and a `prisma.config.ts`, which this template doesn't use) instead of the
-> `^6.1.0` this template is pinned to and built against. Always go through the `bun
-> run` scripts above, or `bun run --cwd apps/api prisma:generate` / `prisma:migrate`
-> / `prisma:deploy` for anything not covered by the root scripts.
-
 This creates a demo admin (`admin@shopstart.dev` / `shopstart-admin`) and a demo
 customer (`customer@shopstart.dev` / `shopstart-customer`), plus a handful of
 categories and products.
