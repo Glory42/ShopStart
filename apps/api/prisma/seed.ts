@@ -2,7 +2,13 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import * as bcrypt from "bcrypt";
 
-const adapter = new PrismaPg(process.env.DATABASE_URL!);
+if (!process.env.DATABASE_URL) {
+  throw new Error(
+    "DATABASE_URL is not set. Copy apps/api/.env.example to apps/api/.env first.",
+  );
+}
+
+const adapter = new PrismaPg(process.env.DATABASE_URL);
 const prisma = new PrismaClient({ adapter });
 
 const CATEGORIES = [
