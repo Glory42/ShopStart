@@ -1,7 +1,7 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import type { PaymentProvider } from "@shopstart/types";
-import { PrismaService } from "../prisma/prisma.service";
-import { decimalToNumber } from "../common/decimal";
+import { PrismaService } from "../../infrastructure/prisma/prisma.service";
+import { decimalToNumber } from "../../common/decimal";
 import { PAYMENT_PROVIDER } from "./payment-provider.token";
 
 @Injectable()

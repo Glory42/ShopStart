@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { createReviewSchema, type CreateReviewInput } from "@shopstart/types";
-import { ZodValidationPipe } from "../common/pipes/zod-validation.pipe";
-import { CurrentUser } from "../common/decorators/current-user.decorator";
+import { ZodValidationPipe } from "../../common/pipes/zod-validation.pipe";
+import { CurrentUser } from "../../common/decorators/current-user.decorator";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import type { AuthenticatedUser } from "../auth/auth.types";
 import { ReviewsService } from "./reviews.service";

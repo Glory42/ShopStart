@@ -1,6 +1,6 @@
 import { Test } from "@nestjs/testing";
 import { ConflictException } from "@nestjs/common";
-import { PrismaService } from "../prisma/prisma.service";
+import { PrismaService } from "../../infrastructure/prisma/prisma.service";
 import { CategoriesService } from "./categories.service";
 
 describe("CategoriesService", () => {
