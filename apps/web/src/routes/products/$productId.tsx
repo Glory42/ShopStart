@@ -39,7 +39,7 @@ function ProductDetailPage() {
 
   return (
     <div>
-      <div className="border-b border-hairline bg-white px-5 py-3">
+      <div className="border-b border-hairline bg-canvas px-5 py-3">
         <div className="mx-auto max-w-6xl text-[13px] text-graphite">
           <Link to="/products" className="hover:text-ink">
             All products
@@ -61,7 +61,7 @@ function ProductDetailPage() {
 
       <div className="mx-auto max-w-6xl px-5 py-12">
         <div className="grid gap-12 lg:grid-cols-2">
-          <div className="aspect-square overflow-hidden rounded-3xl bg-[#f5f5f7]">
+          <div className="aspect-square overflow-hidden rounded-3xl bg-paper-2">
             <img
               src={product.imageUrl ?? undefined}
               alt={product.name}

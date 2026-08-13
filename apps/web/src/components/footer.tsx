@@ -16,7 +16,7 @@ const UTILITY_LINKS = [
  */
 export function Footer() {
   return (
-    <footer className="border-t border-hairline bg-white px-5 py-16 sm:py-20">
+    <footer className="border-t border-hairline bg-canvas px-5 py-16 sm:py-20">
       <div className="mx-auto max-w-6xl">
         <p className="max-w-md text-[clamp(1.75rem,5vw,3rem)] font-semibold leading-[1.05] tracking-tightest text-ink">
           Everyday things, made to last.
@@ -30,7 +30,7 @@ export function Footer() {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className="text-[13px] text-graphite transition-colors hover:text-ink"
+                  className="rounded-sm text-[13px] text-graphite transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 >
                   {link.label}
                 </Link>

@@ -63,7 +63,7 @@ function RegisterPage() {
         />
         <Button
           type="submit"
-          variant="dark"
+          variant="invert"
           disabled={register.isPending}
           className="w-full"
         >

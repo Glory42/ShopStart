@@ -5,6 +5,14 @@ A locked design system for `apps/web`, produced by a Hallmark multi-page redesig
 code. Extend or amend it when the system needs to grow — don't regenerate it
 per page.
 
+**Revision (2026-08-13, same day):** flipped from a light paper (`#fbfbfd`) to
+a full dark theme (`#000000`) at explicit user request ("i do not want white
+bg"). This is an amendment to the locked system per redesign.md's multi-page
+rule ("amend `design.md` first, not override locally") — the Theme block
+below is the *current* source of truth; the paper band axis changed from
+light to dark but genre, macrostructures, nav/footer archetypes, typography,
+motion, and CTA voice are unchanged. Diversification axes updated accordingly.
+
 Scope: the customer-facing storefront (`apps/web`) only. `apps/admin` is a
 separate authenticated tool and is out of scope for this pass.
 
@@ -26,22 +34,29 @@ energy)
 ## Theme
 Custom — continuing the already-established, user-approved palette rather
 than switching to a catalog theme (redesign.md: "preserve the brand"). Anchor
-is the existing accent blue, not a catalog pick.
+is the existing accent blue, not a catalog pick. Values below are Apple's own
+Dark Mode HIG semantic colors, mapped onto our token names — this keeps the
+"real Apple product page" fingerprint intact through the light→dark flip
+rather than inventing an unrelated dark palette.
 
-- `--color-paper`      oklch(98.9% 0.003 286.4)   (#fbfbfd — canvas)
-- `--color-paper-2`    oklch(97.1% 0.003 286.4)   (#f5f5f7 — recessed surfaces, image plates)
-- `--color-ink`        oklch(23.2% 0.004 286.1)   (#1d1d1f — primary text)
-- `--color-ink-2`      oklch(54.0% 0.008 286.1)   (#6e6e73 — secondary text, "graphite")
-- `--color-rule`       oklch(86.5% 0.007 286.3)   (#d2d2d7 — hairline borders)
-- `--color-accent`     oklch(56.3% 0.193 256.2)   (#0071e3 — primary CTA, links)
-- `--color-accent-hov` oklch(58.3% 0.199 256.0)   (#0077ed)
-- `--color-accent-ink` oklch(47.0% 0.158 255.5)   (#0058b0 — dark-mode / pressed state reserve)
-- `--color-focus`      oklch(56.3% 0.193 256.2)   (same as accent — one blue does both jobs)
-- `--color-danger`     oklch(55.3% 0.225 27.3)    (#d70015 — Apple's system red; form/mutation error text only)
+- `--color-paper`      oklch(0.0% 0.000 0.0)      (#000000 — true black canvas)
+- `--color-paper-2`    oklch(22.7% 0.004 286.1)    (#1c1c1e — elevated surfaces: nav bar, image plates, status chips)
+- `--color-paper-3`    oklch(29.4% 0.004 286.2)    (#2c2c2e — reserved for a further-elevated surface, e.g. modals)
+- `--color-ink`        oklch(97.1% 0.003 286.4)    (#f5f5f7 — primary text; off-white, not pure white, to avoid vibration against true black)
+- `--color-ink-2`      oklch(68.1% 0.007 286.2)    (#98989d — secondary text, "graphite")
+- `--color-rule`       oklch(34.1% 0.003 286.2)    (#38383a — hairline borders/separators)
+- `--color-accent`     oklch(62.4% 0.206 255.5)    (#0a84ff — Apple's dark-mode system blue, brighter than the light-mode #0071e3 for contrast against black)
+- `--color-accent-hov` oklch(68.5% 0.170 253.0)    (#409cff)
+- `--color-accent-ink` oklch(50.1% 0.171 256.0)    (#0060c2 — pressed state)
+- `--color-focus`      oklch(62.4% 0.206 255.5)    (same as accent)
+- `--color-danger`     oklch(66.3% 0.224 28.3)     (#ff453a — Apple's dark-mode system red)
+- `--color-warning`    (#ff9f0a — Apple's dark-mode system orange; order-status "pending" chip)
+- `--color-success`    (#30d158 — Apple's dark-mode system green; order-status "delivered" chip)
 
 Diversification axes (for any future Hallmark run in this project to compare
-against): **paper band** = light (98.9%) · **display style** = system-sans ·
-**accent hue** = cool (256°, blue).
+against): **paper band** = dark (0%, was light 98.9%) · **display style** =
+system-sans (unchanged) · **accent hue** = cool (255°, blue — unchanged hue,
+brightened for contrast).
 
 ## Typography
 - Display: system-ui stack (`-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", Helvetica, Arial, sans-serif`), weight 600
@@ -66,8 +81,10 @@ classes instead of composing with them.
 - Reveal pattern: fade + 16px translateY on hero copy only, staggered by
   ~100ms per line. No scroll-triggered reveals on product grids (would delay
   perceived load on a page whose job is "show me the products").
-- Reduced motion: `prefers-reduced-motion` not yet wired at the CSS level —
-  flagged as a follow-up, see Anti-pattern pass notes.
+- Reduced motion: wired at the CSS level (`src/styles.css`, global
+  `@media (prefers-reduced-motion: reduce)` block clamping all
+  animation/transition durations to 150ms). Verified 2026-08-13 — an earlier
+  note here calling this a follow-up was stale.
 
 ## Microinteractions stance
 - Silent success on cart mutations (no toast) — the nav's live cart-count
@@ -75,7 +92,8 @@ classes instead of composing with them.
 - Button hover: `translateY(-1px)` is intentionally **not** used on solid
   fills (reads as a dated "lift" tell) — hover is color-shift + `active:scale-[0.98]` only.
 - `:focus-visible` ring uses `--color-focus` (the accent blue) at a visible
-  1–2px offset ring — see Anti-pattern pass for current coverage gaps.
+  1–2px offset ring. Coverage confirmed complete (2026-08-13): product cards
+  and footer utility links were missing the ring — both now carry it.
 
 ## CTA voice
 - Primary CTA: filled pill, `--color-accent` background, white text, radius
@@ -86,19 +104,31 @@ classes instead of composing with them.
 - Ghost/link CTA: accent-colored text + underline on hover, no box.
 
 ## Nav archetype
-**N1b · Canonical SaaS three-section**, adapted for commerce (component-cookbook.md's
-commerce row lists N1b as an acceptable alternate to N12; N12 was rejected
-because it requires an invented promotional banner and this store has no real
-promotion to advertise — inventing one would violate the honest-copy rule).
-Grid `[1fr auto 1fr]`: wordmark hard-left · centered link cluster (Shop,
-Orders when authenticated) · right cluster (Log in/out as text link, Cart as
-a distinct pill showing live item count). **Scroll state: always-solid**, not
-Hallmark's default frost-on-scroll — the storefront's hero is light, not a
-full-bleed dark/photo hero, so a transparent-at-rest nav with light text
-would be illegible over white. Kept the existing dark bar as the "solid"
-state permanently instead. This deliberately replaces the project's previous
-N1a-shaped nav (wordmark + inline link row + no real CTA), which is
-`anti-patterns.md`'s named "AI nav" fingerprint.
+**N6 · Newspaper masthead** (revised 2026-08-13, replacing N1b — user
+feedback: the three-section bar read as flat in shape, plainness, and
+color/contrast all at once). N6 is this project's genre's own default
+(editorial), so this is a return to the genre's home archetype rather than a
+one-off swap. Structure: a thin mono small-caps utility line stands in for
+N6's issue-date line (Log in/out left-of-center, Cart with live count
+right-of-center, joined by a middot) · a large centered wordmark anchors the
+page · Shop/Orders (when authenticated) sit beneath as the link row · a
+double rule closes the block, with the bottom rule rendered in
+`--color-accent` as the one signature color move (was all-hairline grey
+before). Chrome is `bg-canvas` (true black), not the previous
+`bg-paper-2/90` frosted-grey bar — crisper contrast against the page, no
+elevated-surface smudge.
+
+**Deliberately not sticky.** A masthead is a one-time page opener in
+newspaper convention, not a bar that chases scroll — this also matches the
+"Everyday things, made to last." editorial hero language already in place.
+Cart/Log in stay reachable via the footer's utility row on longer pages
+(product grid, orders). This is a real trade-off (persistent cart access is
+gone while scrolling) — flagged here rather than left silent; revisit if it
+turns out to hurt cart completion.
+
+This replaces the project's previous N1a-shaped nav (before N1b), and now
+N1b itself — three navs in this project's history, each addressing a
+concrete complaint rather than swapped for novelty.
 
 ## Footer archetype
 **Ft5 · Statement**, refined from the project's previous Ft3/Ft5 hybrid (link
@@ -120,7 +150,7 @@ real destinations to justify it honestly).
   marketing page; they do not get their own structural fingerprint.
 
 ## What pages MUST share
-- The wordmark, nav (N1b), footer (Ft5).
+- The wordmark, nav (N6), footer (Ft5).
 - The accent colour and its placement (primary CTA only — not decorative).
 - The system-sans type stack, CTA voice, spacing scale.
 

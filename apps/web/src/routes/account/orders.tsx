@@ -10,12 +10,12 @@ export const Route = createFileRoute("/account/orders")({
 });
 
 const STATUS_STYLES: Record<Order["status"], string> = {
-  PENDING: "bg-[#fff4e5] text-[#a35a00]",
-  PAID: "bg-[#e5f2ff] text-accent",
-  SHIPPED: "bg-[#e5f2ff] text-accent",
-  DELIVERED: "bg-[#e6f7ec] text-[#1a7f43]",
-  CANCELLED: "bg-[#f5f5f7] text-graphite",
-  REFUNDED: "bg-[#f5f5f7] text-graphite",
+  PENDING: "bg-warning/15 text-warning",
+  PAID: "bg-accent/15 text-accent",
+  SHIPPED: "bg-accent/15 text-accent",
+  DELIVERED: "bg-success/15 text-success",
+  CANCELLED: "bg-paper-2 text-graphite",
+  REFUNDED: "bg-paper-2 text-graphite",
 };
 
 function OrdersPage() {
@@ -39,7 +39,7 @@ function OrdersPage() {
         <p className="mt-3 text-[15px] text-graphite">
           Once you place an order, you'll be able to track it here.
         </p>
-        <Link to="/products" className={cn(buttonClasses("dark"), "mt-7 inline-flex")}>
+        <Link to="/products" className={cn(buttonClasses("invert"), "mt-7 inline-flex")}>
           Start shopping
         </Link>
       </div>
