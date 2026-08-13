@@ -14,6 +14,7 @@ export default {
           hover: "#0077ed",
           dark: "#0058b0",
         },
+        danger: "#d70015",
       },
       fontFamily: {
         sans: [

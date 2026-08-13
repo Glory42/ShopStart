@@ -17,3 +17,8 @@ apps/api/generated/
 
 # tanstack router codegen
 routeTree.gen.ts
+
+# locally-installed AI coding-assistant skills (not part of the shipped template)
+.agents/
+.claude/skills/
+skills-lock.json
