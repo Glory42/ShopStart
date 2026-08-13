@@ -1,4 +1,19 @@
 node_modules/
 .env
+.env.*
+!.env.example
 .DS_Store
 *.log
+
+# build output
+dist/
+.output/
+.tanstack/
+.turbo/
+coverage/
+
+# prisma
+apps/api/generated/
+
+# tanstack router codegen
+routeTree.gen.ts

@@ -1,0 +1,33 @@
+{
+  "name": "shopstart",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A clone-and-build e-commerce site template: NestJS API, TanStack Start storefront, TanStack Router admin, on Bun.",
+  "license": "MIT",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "seed": "bun run --cwd apps/api seed",
+    "db:migrate": "bun run --cwd apps/api prisma:migrate"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.0",
+    "typescript": "^5.9.3",
+    "prettier": "^3.6.2",
+    "eslint": "^9.38.0",
+    "@eslint/js": "^9.38.0",
+    "typescript-eslint": "^8.18.0"
+  },
+  "packageManager": "bun@1.3.5",
+  "engines": {
+    "bun": ">=1.3.0"
+  }
+}
