@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Cart } from "@shopstart/types";
 import { api } from "../lib/api-client";
+import { Button, buttonClasses } from "../components/button";
 
 export const Route = createFileRoute("/cart")({
   component: CartPage,
@@ -25,12 +26,20 @@ function CartPage() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cart"] }),
   });
 
-  if (isLoading) return <p>Loading cart...</p>;
+  if (isLoading) {
+    return <div className="px-5 py-24 text-center text-[15px] text-graphite">Loading cart...</div>;
+  }
+
   if (!cart || cart.items.length === 0) {
     return (
-      <div>
-        <h1 className="text-2xl font-semibold">Your cart is empty</h1>
-        <Link to="/products" className="mt-4 inline-block text-neutral-600 underline">
+      <div className="px-5 py-28 text-center">
+        <h1 className="text-3xl font-semibold tracking-tight text-ink">
+          Your bag is empty
+        </h1>
+        <p className="mt-3 text-[15px] text-graphite">
+          Everything you add will show up here.
+        </p>
+        <Link to="/products" className={`${buttonClasses("dark")} mt-7 inline-flex`}>
           Continue shopping
         </Link>
       </div>
@@ -43,52 +52,97 @@ function CartPage() {
   );
 
   return (
-    <div>
-      <h1 className="mb-6 text-2xl font-semibold">Your cart</h1>
-      <ul className="divide-y divide-neutral-200">
-        {cart.items.map((item) => (
-          <li key={item.id} className="flex items-center gap-4 py-4">
-            <img
-              src={item.product?.imageUrl ?? undefined}
-              alt={item.product?.name}
-              className="h-20 w-20 rounded-md object-cover"
-            />
-            <div className="flex-1">
-              <p className="font-medium">{item.product?.name}</p>
-              <p className="text-sm text-neutral-600">
-                ${item.product?.price.toFixed(2)}
-              </p>
-            </div>
-            <input
-              type="number"
-              min={1}
-              value={item.quantity}
-              onChange={(e) =>
-                updateQuantity.mutate({
-                  productId: item.productId,
-                  quantity: Number(e.target.value) || 1,
-                })
-              }
-              className="w-16 rounded border border-neutral-300 px-2 py-1"
-            />
-            <button
-              onClick={() => removeItem.mutate(item.productId)}
-              className="text-sm text-neutral-500"
-            >
-              Remove
-            </button>
-          </li>
-        ))}
-      </ul>
+    <div className="mx-auto max-w-6xl px-5 py-14">
+      <h1 className="mb-10 text-4xl font-semibold tracking-tight text-ink">
+        Review your bag
+      </h1>
 
-      <div className="mt-6 flex items-center justify-between">
-        <p className="text-lg font-medium">Total: ${total.toFixed(2)}</p>
-        <Link
-          to="/checkout"
-          className="rounded-md bg-neutral-900 px-6 py-2 text-white"
-        >
-          Checkout
-        </Link>
+      <div className="grid gap-12 lg:grid-cols-[1fr_360px]">
+        <ul className="divide-y divide-hairline border-y border-hairline">
+          {cart.items.map((item) => (
+            <li key={item.id} className="flex items-center gap-5 py-6">
+              <Link
+                to="/products/$productId"
+                params={{ productId: item.productId }}
+                className="h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-[#f5f5f7]"
+              >
+                <img
+                  src={item.product?.imageUrl ?? undefined}
+                  alt={item.product?.name}
+                  className="h-full w-full object-cover"
+                />
+              </Link>
+              <div className="min-w-0 flex-1">
+                <Link
+                  to="/products/$productId"
+                  params={{ productId: item.productId }}
+                  className="text-[15px] font-medium text-ink hover:text-graphite"
+                >
+                  {item.product?.name}
+                </Link>
+                <p className="mt-1 text-[14px] text-graphite">
+                  ${item.product?.price.toFixed(2)}
+                </p>
+                <button
+                  onClick={() => removeItem.mutate(item.productId)}
+                  className="mt-2 text-[13px] text-accent hover:underline"
+                >
+                  Remove
+                </button>
+              </div>
+              <div className="flex items-center rounded-full border border-hairline">
+                <button
+                  onClick={() =>
+                    updateQuantity.mutate({
+                      productId: item.productId,
+                      quantity: Math.max(1, item.quantity - 1),
+                    })
+                  }
+                  className="h-9 w-9 text-[15px] text-ink hover:text-graphite"
+                  aria-label="Decrease quantity"
+                >
+                  −
+                </button>
+                <span className="w-6 text-center text-[14px] text-ink">
+                  {item.quantity}
+                </span>
+                <button
+                  onClick={() =>
+                    updateQuantity.mutate({
+                      productId: item.productId,
+                      quantity: item.quantity + 1,
+                    })
+                  }
+                  className="h-9 w-9 text-[15px] text-ink hover:text-graphite"
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        <div className="h-fit rounded-2xl border border-hairline p-6 lg:sticky lg:top-20">
+          <p className="eyebrow mb-4">Order summary</p>
+          <div className="flex items-center justify-between text-[14px] text-graphite">
+            <span>Subtotal</span>
+            <span className="text-ink">${total.toFixed(2)}</span>
+          </div>
+          <div className="mt-2 flex items-center justify-between text-[14px] text-graphite">
+            <span>Shipping</span>
+            <span className="text-ink">Calculated at checkout</span>
+          </div>
+          <div className="mt-4 flex items-center justify-between border-t border-hairline pt-4 text-[15px] font-medium text-ink">
+            <span>Total</span>
+            <span>${total.toFixed(2)}</span>
+          </div>
+          <Link to="/checkout" className="mt-6 block">
+            <Button variant="primary" className="w-full">
+              Checkout
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );

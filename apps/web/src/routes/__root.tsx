@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-router";
 import { QueryClientProvider, type QueryClient } from "@tanstack/react-query";
 import { Nav } from "../components/nav";
+import { Footer } from "../components/footer";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
@@ -28,12 +29,15 @@ function RootComponent() {
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="font-sans">
         <QueryClientProvider client={queryClient}>
-          <Nav />
-          <main className="mx-auto max-w-5xl px-4 py-8">
-            <Outlet />
-          </main>
+          <div className="flex min-h-screen flex-col">
+            <Nav />
+            <main className="flex-1">
+              <Outlet />
+            </main>
+            <Footer />
+          </div>
         </QueryClientProvider>
         <Scripts />
       </body>
