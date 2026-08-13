@@ -50,7 +50,7 @@ function LoginPage() {
           value={form.password}
           onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
-        <Button type="submit" variant="dark" disabled={login.isPending} className="w-full">
+        <Button type="submit" variant="invert" disabled={login.isPending} className="w-full">
           Log in
         </Button>
         {login.isError && (

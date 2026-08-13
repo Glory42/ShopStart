@@ -5,16 +5,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: "#1d1d1f",
-        graphite: "#6e6e73",
-        hairline: "#d2d2d7",
-        canvas: "#fbfbfd",
-        accent: {
-          DEFAULT: "#0071e3",
-          hover: "#0077ed",
-          dark: "#0058b0",
+        ink: "#f5f5f7",
+        graphite: "#98989d",
+        hairline: "#38383a",
+        canvas: "#000000",
+        paper: {
+          2: "#1c1c1e",
+          3: "#2c2c2e",
         },
-        danger: "#d70015",
+        accent: {
+          DEFAULT: "#0a84ff",
+          hover: "#409cff",
+          dark: "#0060c2",
+        },
+        danger: "#ff453a",
+        warning: "#ff9f0a",
+        success: "#30d158",
       },
       fontFamily: {
         sans: [

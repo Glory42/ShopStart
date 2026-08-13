@@ -39,7 +39,7 @@ function CartPage() {
         <p className="mt-3 text-[15px] text-graphite">
           Everything you add will show up here.
         </p>
-        <Link to="/products" className={`${buttonClasses("dark")} mt-7 inline-flex`}>
+        <Link to="/products" className={`${buttonClasses("invert")} mt-7 inline-flex`}>
           Continue shopping
         </Link>
       </div>
@@ -64,7 +64,7 @@ function CartPage() {
               <Link
                 to="/products/$productId"
                 params={{ productId: item.productId }}
-                className="h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-[#f5f5f7]"
+                className="h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-paper-2"
               >
                 <img
                   src={item.product?.imageUrl ?? undefined}

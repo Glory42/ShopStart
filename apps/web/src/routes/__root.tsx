@@ -41,7 +41,7 @@ function StatusPage({ title, detail }: { title: string; detail?: string }) {
         <p className="mx-auto mt-3 max-w-md text-[14px] text-graphite">{detail}</p>
       )}
       <Link to="/" className="mt-7 inline-block">
-        <Button variant="dark">Back to shopstart</Button>
+        <Button variant="invert">Back to shopstart</Button>
       </Link>
     </div>
   );

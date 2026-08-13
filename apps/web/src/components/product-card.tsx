@@ -8,16 +8,16 @@ export function ProductCard({ product }: { product: Product }) {
     <Link
       to="/products/$productId"
       params={{ productId: product.id }}
-      className="group block"
+      className="group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas"
     >
-      <div className="relative aspect-square overflow-hidden rounded-2xl bg-[#f5f5f7]">
+      <div className="relative aspect-square overflow-hidden rounded-2xl bg-paper-2">
         <img
           src={product.imageUrl ?? undefined}
           alt={product.name}
           className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
         />
         {outOfStock && (
-          <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-[11px] font-medium text-graphite backdrop-blur">
+          <span className="absolute left-3 top-3 rounded-full bg-canvas/85 px-3 py-1 text-[11px] font-medium text-graphite backdrop-blur">
             Out of stock
           </span>
         )}

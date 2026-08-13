@@ -33,7 +33,7 @@ function HomePage() {
 
   return (
     <div>
-      <section className="border-b border-hairline bg-white px-5 pb-10 pt-16 sm:pt-20">
+      <section className="border-b border-hairline bg-canvas px-5 pb-10 pt-16 sm:pt-20">
         <div className="mx-auto max-w-6xl">
           <p className="eyebrow mb-4 animate-fade-up">Shopstart</p>
           <h1 className="max-w-lg animate-fade-up text-3xl font-semibold leading-snug tracking-tight text-ink sm:text-4xl">
@@ -47,7 +47,7 @@ function HomePage() {
       </section>
 
       {byCategory.map(({ category, products: categoryProducts }) => (
-        <section key={category.id} className="border-b border-hairline bg-white px-5 py-12">
+        <section key={category.id} className="border-b border-hairline bg-canvas px-5 py-12">
           <div className="mx-auto max-w-6xl">
             <div className="mb-8 flex items-baseline justify-between">
               <h2 className="text-xl font-semibold tracking-tight text-ink">

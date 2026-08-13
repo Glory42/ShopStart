@@ -32,7 +32,7 @@ function ProductListPage() {
 
   return (
     <div>
-      <div className="border-b border-hairline bg-white px-5 pb-8 pt-14">
+      <div className="border-b border-hairline bg-canvas px-5 pb-8 pt-14">
         <div className="mx-auto max-w-6xl">
           <p className="eyebrow mb-3">Catalog</p>
           <h1 className="text-4xl font-semibold tracking-tight text-ink">
@@ -41,14 +41,14 @@ function ProductListPage() {
         </div>
       </div>
 
-      <div className="border-b border-hairline bg-white px-5 py-5">
+      <div className="border-b border-hairline bg-canvas px-5 py-5">
         <div className="mx-auto flex max-w-6xl flex-wrap gap-2">
           <Link
             to="/products"
             className={cn(
               "rounded-full px-4 py-2 text-[13px] font-medium transition-colors",
               !categoryId
-                ? "bg-ink text-white"
+                ? "bg-ink text-canvas"
                 : "border border-hairline text-ink hover:border-ink",
             )}
           >
@@ -62,7 +62,7 @@ function ProductListPage() {
               className={cn(
                 "rounded-full px-4 py-2 text-[13px] font-medium transition-colors",
                 categoryId === category.id
-                  ? "bg-ink text-white"
+                  ? "bg-ink text-canvas"
                   : "border border-hairline text-ink hover:border-ink",
               )}
             >
@@ -72,7 +72,7 @@ function ProductListPage() {
         </div>
       </div>
 
-      <div className="bg-white px-5 py-14">
+      <div className="bg-canvas px-5 py-14">
         <div className="mx-auto max-w-6xl">
           {products.length === 0 ? (
             <p className="py-20 text-center text-[15px] text-graphite">

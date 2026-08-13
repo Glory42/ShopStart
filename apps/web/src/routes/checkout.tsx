@@ -81,7 +81,7 @@ function CheckoutPage() {
                   name="address"
                   checked={selectedAddressId === address.id}
                   onChange={() => setSelectedAddressId(address.id)}
-                  className="mt-1 accent-ink"
+                  className="mt-1 accent-accent"
                 />
                 <span className="text-[14px] text-ink">
                   {address.line1}
@@ -126,7 +126,7 @@ function CheckoutPage() {
                   }
                 />
               ))}
-              <Button type="submit" variant="dark">
+              <Button type="submit" variant="invert">
                 Save address
               </Button>
             </form>

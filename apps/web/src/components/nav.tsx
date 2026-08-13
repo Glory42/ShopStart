@@ -5,11 +5,17 @@ import { useSession } from "../lib/session";
 import { api } from "../lib/api-client";
 
 /**
- * N1b · Canonical SaaS three-section, adapted for commerce (design.md § Nav
- * archetype). Grid [1fr auto 1fr]: wordmark · centered link cluster · Log
- * in/out + Cart pill. Always-solid (not frost-on-scroll) — see design.md for
- * why. Replaces the project's previous N1a-shaped nav (the named "AI nav"
- * fingerprint in anti-patterns.md).
+ * N6 · Newspaper masthead (design.md § Nav archetype, revised 2026-08-13).
+ * Replaces the previous N1b three-section bar — same centered-cluster shape
+ * read as "plain" and the elevated grey glass bar read as low-contrast.
+ * Masthead is N6's own genre default (this project's genre is editorial),
+ * adapted for commerce: a thin utility line (Log in/out + Cart) stands in
+ * for N6's issue-date line, a big centered wordmark anchors the page, Shop/
+ * Orders sit beneath as the link row, and a double rule closes it — the
+ * bottom rule in accent blue is the one signature color move. Deliberately
+ * NOT sticky: a masthead is a one-time page opener, not a bar that chases
+ * scroll (genuine newspaper convention) — Cart/Log in stay reachable via
+ * the footer's utility row on long pages.
  */
 export function Nav() {
   const { data: user } = useSession();
@@ -30,55 +36,63 @@ export function Nav() {
     router.navigate({ to: "/" });
   }
 
-  const linkClasses =
-    "text-[13px] font-medium text-neutral-300 transition-colors duration-150 hover:text-white [&.active]:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-sm";
+  const navLinkClasses =
+    "text-[13px] font-medium uppercase tracking-[0.08em] text-graphite transition-colors duration-150 hover:text-ink [&.active]:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#1d1d1f]/95 backdrop-blur-xl">
-      <div className="mx-auto grid h-14 max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-5">
-        <Link
-          to="/"
-          className="justify-self-start text-[15px] font-semibold tracking-tight text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-sm"
-        >
-          shopstart
-        </Link>
-
-        <nav className="flex items-center justify-self-center gap-7">
-          <Link to="/products" className={linkClasses}>
-            Shop
-          </Link>
-          {user && (
-            <Link to="/account/orders" className={linkClasses}>
-              Orders
-            </Link>
-          )}
-        </nav>
-
-        <div className="flex items-center justify-self-end gap-5">
-          {user ? (
-            <button
-              onClick={logout}
-              className="text-[13px] font-medium text-neutral-300 transition-colors duration-150 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-sm"
-            >
-              Log out
-            </button>
-          ) : (
-            <Link to="/login" className={linkClasses}>
-              Log in
-            </Link>
-          )}
-          <Link
-            to="/cart"
-            className="flex items-center gap-1.5 rounded-full border border-white/25 px-3.5 py-1.5 text-[13px] font-medium text-white transition-colors duration-150 hover:border-white/50 [&.active]:border-white/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+    <header className="border-b-0 bg-canvas px-5 pt-4 text-center">
+      <div className="mx-auto flex max-w-6xl items-center justify-center gap-4 text-[11px] font-mono uppercase tracking-[0.08em] text-graphite">
+        {user ? (
+          <button
+            onClick={logout}
+            className="transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
           >
-            Cart
-            {cartCount > 0 && (
-              <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[11px] font-semibold leading-none text-white">
-                {cartCount}
-              </span>
-            )}
+            Log out
+          </button>
+        ) : (
+          <Link
+            to="/login"
+            className="transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
+          >
+            Log in
           </Link>
-        </div>
+        )}
+        <span aria-hidden className="text-rule">
+          ·
+        </span>
+        <Link
+          to="/cart"
+          className="flex items-center gap-1.5 transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
+        >
+          Cart
+          {cartCount > 0 && (
+            <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-semibold leading-none text-white">
+              {cartCount}
+            </span>
+          )}
+        </Link>
+      </div>
+
+      <Link
+        to="/"
+        className="mt-1 inline-block rounded-sm text-[clamp(2rem,5vw,3rem)] font-semibold leading-[0.95] tracking-tightest text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      >
+        shopstart
+      </Link>
+
+      <nav aria-label="Primary" className="mt-2 flex items-center justify-center gap-6">
+        <Link to="/products" className={navLinkClasses}>
+          Shop
+        </Link>
+        {user && (
+          <Link to="/account/orders" className={navLinkClasses}>
+            Orders
+          </Link>
+        )}
+      </nav>
+
+      <div className="mx-auto mt-4 max-w-6xl border-t border-hairline">
+        <div className="border-t-2 border-accent" />
       </div>
     </header>
   );
