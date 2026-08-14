@@ -8,9 +8,8 @@ import {
   type UpdateOrderStatusInput,
 } from "@shopstart/types";
 import { ZodValidationPipe } from "../../common/pipes/zod-validation.pipe";
+import { AdminOnly } from "../../common/decorators/admin-only.decorator";
 import { CurrentUser } from "../../common/decorators/current-user.decorator";
-import { Roles } from "../../common/decorators/roles.decorator";
-import { RolesGuard } from "../../common/guards/roles.guard";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import type { AuthenticatedUser } from "../auth/auth.types";
 import { OrdersService } from "./orders.service";
@@ -35,8 +34,7 @@ export class OrdersController {
   }
 
   @Get("admin")
-  @UseGuards(RolesGuard)
-  @Roles(Role.ADMIN)
+  @AdminOnly()
   findAllAdmin() {
     return this.orders.findAllAdmin();
   }
@@ -47,8 +45,7 @@ export class OrdersController {
   }
 
   @Patch(":id/status")
-  @UseGuards(RolesGuard)
-  @Roles(Role.ADMIN)
+  @AdminOnly()
   updateStatus(
     @Param("id") id: string,
     @Body(new ZodValidationPipe(updateOrderStatusSchema)) input: UpdateOrderStatusInput,
