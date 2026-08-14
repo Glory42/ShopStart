@@ -10,4 +10,13 @@ export default defineConfig({
     tanstackStart(),
     react(),
   ],
+  test: {
+    coverage: {
+      provider: "v8",
+      // Written to apps/*/coverage, which turbo.json's test task declares as
+      // its output and .gitignore already excludes.
+      reportsDirectory: "./coverage",
+      reporter: ["text", "lcov"],
+    },
+  },
 });
