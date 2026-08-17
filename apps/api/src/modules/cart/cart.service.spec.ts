@@ -121,11 +121,12 @@ describe("CartService", () => {
   });
 
   describe("requireNonEmpty", () => {
-    it("returns the cart when it has items", async () => {
-      const cart = rawCart([rawItem()]);
-      prisma.cart.upsert.mockResolvedValue(cart);
+    it("returns the serialized cart (Decimal price converted to number) when it has items", async () => {
+      prisma.cart.upsert.mockResolvedValue(rawCart([rawItem({ price: 24 })]));
 
-      await expect(service.requireNonEmpty(userId)).resolves.toBe(cart);
+      const result = await service.requireNonEmpty(userId);
+
+      expect(result.items[0].product.price).toBe(24);
     });
 
     it("rejects an empty cart", async () => {
