@@ -4,6 +4,8 @@ import { useState } from "react";
 import type { Category, CreateCategoryInput } from "@shopstart/types";
 import { api } from "../../lib/api-client";
 import { useRequireAdmin } from "../../lib/session";
+import { Button } from "../../components/button";
+import { Input } from "../../components/input";
 
 export const Route = createFileRoute("/categories/")({
   component: CategoriesPage,
@@ -44,23 +46,19 @@ function CategoriesPage() {
         }}
         className="mb-6 flex gap-2"
       >
-        <input
+        <Input
           required
           placeholder="Name"
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
-          className="rounded border border-neutral-300 px-3 py-2 text-sm"
         />
-        <input
+        <Input
           required
           placeholder="Slug"
           value={form.slug}
           onChange={(e) => setForm({ ...form, slug: e.target.value })}
-          className="rounded border border-neutral-300 px-3 py-2 text-sm"
         />
-        <button className="rounded-md bg-neutral-900 px-4 py-2 text-sm text-white">
-          Add
-        </button>
+        <Button>Add</Button>
       </form>
 
       <ul className="divide-y divide-neutral-200">
@@ -69,12 +67,9 @@ function CategoriesPage() {
             <span>
               {category.name} <span className="text-neutral-400">/{category.slug}</span>
             </span>
-            <button
-              onClick={() => removeCategory.mutate(category.id)}
-              className="text-sm text-red-600"
-            >
+            <Button variant="danger" onClick={() => removeCategory.mutate(category.id)}>
               Delete
-            </button>
+            </Button>
           </li>
         ))}
       </ul>

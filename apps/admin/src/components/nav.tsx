@@ -2,6 +2,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSession } from "../lib/session";
 import { api } from "../lib/api-client";
+import { Button } from "./button";
 
 export function Nav() {
   const { data: user } = useSession();
@@ -27,9 +28,9 @@ export function Nav() {
           <Link to="/categories">Categories</Link>
           <Link to="/orders">Orders</Link>
           <Link to="/users">Users</Link>
-          <button onClick={logout} className="text-neutral-500">
+          <Button variant="ghost" onClick={logout}>
             Log out
-          </button>
+          </Button>
         </div>
       </nav>
     </header>
