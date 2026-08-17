@@ -4,6 +4,7 @@ import type { Order } from "@shopstart/types";
 import { ORDER_STATUS_TRANSITIONS, OrderStatus } from "@shopstart/types";
 import { api } from "../../lib/api-client";
 import { useRequireAdmin } from "../../lib/session";
+import { Table, TableBody, TableHead, TableRow } from "../../components/table";
 
 export const Route = createFileRoute("/orders/")({
   component: OrdersPage,
@@ -28,25 +29,19 @@ function OrdersPage() {
   return (
     <div>
       <h1 className="mb-6 text-2xl font-semibold">Orders</h1>
-      <table className="w-full text-left text-sm">
-        <thead>
-          <tr className="border-b border-neutral-200 text-neutral-500">
-            <th className="py-2">Order</th>
-            <th>Total</th>
-            <th>Status</th>
-            <th>Update</th>
-          </tr>
-        </thead>
-        <tbody>
+      <Table>
+        <TableHead columns={["Order", "Total", "Status", "Update"]} />
+        <TableBody>
           {orders?.map((order) => {
             const nextOptions = ORDER_STATUS_TRANSITIONS[order.status];
             return (
-              <tr key={order.id} className="border-b border-neutral-100">
-                <td className="py-2">{order.id.slice(0, 8)}</td>
-                <td>${order.totalPrice.toFixed(2)}</td>
-                <td>{order.status}</td>
-                <td>
-                  {nextOptions.length > 0 ? (
+              <TableRow
+                key={order.id}
+                cells={[
+                  order.id.slice(0, 8),
+                  `$${order.totalPrice.toFixed(2)}`,
+                  order.status,
+                  nextOptions.length > 0 ? (
                     <select
                       defaultValue=""
                       onChange={(e) =>
@@ -67,13 +62,13 @@ function OrdersPage() {
                     </select>
                   ) : (
                     <span className="text-neutral-400">Final</span>
-                  )}
-                </td>
-              </tr>
+                  ),
+                ]}
+              />
             );
           })}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 }

@@ -3,6 +3,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import type { LoginInput, User } from "@shopstart/types";
 import { api, ApiError } from "../lib/api-client";
+import { Button } from "../components/button";
+import { Input } from "../components/input";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -38,29 +40,23 @@ function LoginPage() {
         className="space-y-3"
       >
         <h1 className="text-2xl font-semibold">shopstart admin</h1>
-        <input
+        <Input
           type="email"
           required
           placeholder="Email"
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
-          className="w-full rounded border border-neutral-300 px-3 py-2"
         />
-        <input
+        <Input
           type="password"
           required
           placeholder="Password"
           value={form.password}
           onChange={(e) => setForm({ ...form, password: e.target.value })}
-          className="w-full rounded border border-neutral-300 px-3 py-2"
         />
-        <button
-          type="submit"
-          disabled={login.isPending}
-          className="w-full rounded-md bg-neutral-900 px-4 py-2 text-white"
-        >
+        <Button type="submit" disabled={login.isPending} className="w-full">
           Log in
-        </button>
+        </Button>
         {login.isError && (
           <p className="text-sm text-red-600">{(login.error as Error).message}</p>
         )}
