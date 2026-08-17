@@ -11,7 +11,7 @@ import { api } from "../lib/api-client";
  * Masthead is N6's own genre default (this project's genre is editorial),
  * adapted for commerce: a thin utility line (Log in/out + Cart) stands in
  * for N6's issue-date line, a big centered wordmark anchors the page, Shop/
- * Orders sit beneath as the link row, and a double rule closes it — the
+ * Orders/Wishlists sit beneath as the link row, and a double rule closes it — the
  * bottom rule in accent blue is the one signature color move. Deliberately
  * NOT sticky: a masthead is a one-time page opener, not a bar that chases
  * scroll (genuine newspaper convention) — Cart/Log in stay reachable via
@@ -87,6 +87,11 @@ export function Nav() {
         {user && (
           <Link to="/account/orders" className={navLinkClasses}>
             Orders
+          </Link>
+        )}
+        {user && (
+          <Link to="/account/wishlists" className={navLinkClasses}>
+            Wishlists
           </Link>
         )}
       </nav>

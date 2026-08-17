@@ -4,6 +4,7 @@ const UTILITY_LINKS = [
   { label: "Shop", to: "/products" as const },
   { label: "Your cart", to: "/cart" as const },
   { label: "Orders", to: "/account/orders" as const },
+  { label: "Wishlists", to: "/account/wishlists" as const },
   { label: "Log in", to: "/login" as const },
 ];
 
