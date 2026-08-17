@@ -29,7 +29,7 @@ jobs:
       WEB_ORIGIN: "http://localhost:3000"
       ADMIN_ORIGIN: "http://localhost:3001"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: oven-sh/setup-bun@v2
         with:
