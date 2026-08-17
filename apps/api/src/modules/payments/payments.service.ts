@@ -1,13 +1,15 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
-import type { PaymentProvider } from "@shopstart/types";
+import { OrderStatus, type PaymentProvider } from "@shopstart/types";
 import { PrismaService } from "../../infrastructure/prisma/prisma.service";
 import { decimalToNumber } from "../../common/decimal";
+import { OrdersService } from "../orders/orders.service";
 import { PAYMENT_PROVIDER } from "./payment-provider.token";
 
 @Injectable()
 export class PaymentsService {
   constructor(
     private readonly prisma: PrismaService,
+    private readonly orders: OrdersService,
     @Inject(PAYMENT_PROVIDER) private readonly provider: PaymentProvider,
   ) {}
 
@@ -23,8 +25,8 @@ export class PaymentsService {
       amount: decimalToNumber(order.totalPrice),
     });
 
-    await this.prisma.$transaction([
-      this.prisma.payment.create({
+    await this.prisma.$transaction(async (tx) => {
+      await tx.payment.create({
         data: {
           orderId,
           status: result.status,
@@ -32,11 +34,12 @@ export class PaymentsService {
           providerRef: result.providerRef,
           amount: result.amount,
         },
-      }),
-      ...(result.status === "SUCCEEDED"
-        ? [this.prisma.order.update({ where: { id: orderId }, data: { status: "PAID" as const } })]
-        : []),
-    ]);
+      });
+
+      if (result.status === "SUCCEEDED") {
+        await this.orders.transitionStatus(tx, orderId, OrderStatus.PAID);
+      }
+    });
 
     return result;
   }

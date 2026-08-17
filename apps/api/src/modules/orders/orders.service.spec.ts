@@ -200,6 +200,42 @@ describe("OrdersService", () => {
     });
   });
 
+  describe("transitionStatus", () => {
+    // The transaction-participating counterpart to updateStatus, used by
+    // other services (e.g. PaymentsService) that need the status write to
+    // happen alongside their own writes in one transaction. Applies the
+    // same guard as updateStatus, just via the given tx client.
+
+    it("applies a valid forward transition through the given transaction client", async () => {
+      prisma.order.findUnique.mockResolvedValue({ id: "order-1", status: "PENDING" });
+
+      await service.transitionStatus(prisma as unknown as Prisma.TransactionClient, "order-1", "PAID");
+
+      expect(prisma.order.update).toHaveBeenCalledWith({
+        where: { id: "order-1" },
+        data: { status: "PAID" },
+      });
+    });
+
+    it("rejects an invalid transition and does not write", async () => {
+      prisma.order.findUnique.mockResolvedValue({ id: "order-1", status: "CANCELLED" });
+
+      await expect(
+        service.transitionStatus(prisma as unknown as Prisma.TransactionClient, "order-1", "PAID"),
+      ).rejects.toBeInstanceOf(BadRequestException);
+      expect(prisma.order.update).not.toHaveBeenCalled();
+    });
+
+    it("throws NotFoundException when the order doesn't exist", async () => {
+      prisma.order.findUnique.mockResolvedValue(null);
+
+      await expect(
+        service.transitionStatus(prisma as unknown as Prisma.TransactionClient, "missing", "PAID"),
+      ).rejects.toBeInstanceOf(NotFoundException);
+      expect(prisma.order.update).not.toHaveBeenCalled();
+    });
+  });
+
   describe("findById", () => {
     const order = {
       id: "order-1",
