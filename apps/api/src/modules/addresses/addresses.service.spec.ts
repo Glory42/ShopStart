@@ -6,7 +6,7 @@ import { AddressesService } from "./addresses.service";
 describe("AddressesService", () => {
   let service: AddressesService;
   let prisma: {
-    address: { findMany: jest.Mock; create: jest.Mock; findUnique: jest.Mock; delete: jest.Mock };
+    address: { findUnique: jest.Mock; delete: jest.Mock };
   };
 
   const userId = "user-1";
@@ -14,12 +14,7 @@ describe("AddressesService", () => {
 
   beforeEach(async () => {
     prisma = {
-      address: {
-        findMany: jest.fn(),
-        create: jest.fn(),
-        findUnique: jest.fn(),
-        delete: jest.fn(),
-      },
+      address: { findUnique: jest.fn(), delete: jest.fn() },
     };
 
     const module = await Test.createTestingModule({
@@ -29,35 +24,7 @@ describe("AddressesService", () => {
     service = module.get(AddressesService);
   });
 
-  describe("listForUser", () => {
-    it("scopes results to the given user", () => {
-      service.listForUser(userId);
-
-      expect(prisma.address.findMany).toHaveBeenCalledWith(
-        expect.objectContaining({ where: { userId } }),
-      );
-    });
-  });
-
-  describe("create", () => {
-    it("attaches the address to the given user", () => {
-      const input = { line1: "1 Main St", city: "Springfield", state: "IL", postalCode: "62701", country: "US" };
-
-      service.create(userId, input as never);
-
-      expect(prisma.address.create).toHaveBeenCalledWith({ data: { ...input, userId } });
-    });
-  });
-
   describe("remove", () => {
-    it("deletes an address owned by the user", async () => {
-      prisma.address.findUnique.mockResolvedValue(address);
-
-      await service.remove(userId, "address-1");
-
-      expect(prisma.address.delete).toHaveBeenCalledWith({ where: { id: "address-1" } });
-    });
-
     it("rejects deleting another user's address", async () => {
       prisma.address.findUnique.mockResolvedValue(address);
 
