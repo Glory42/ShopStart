@@ -65,7 +65,7 @@ export class OrdersService {
           );
         }
 
-        const unitPrice = decimalToNumber(item.product.price);
+        const unitPrice = item.product.price;
         totalPrice += unitPrice * item.quantity;
         itemsData.push({
           productId: item.productId,

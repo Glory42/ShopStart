@@ -73,6 +73,9 @@ describe("OrdersService", () => {
         ],
       });
       prisma.product.updateMany.mockResolvedValue({ count: 1 });
+      // CartService.requireNonEmpty() serializes this raw Prisma cart before
+      // OrdersService ever sees it, so checkout only ever consumes the
+      // serialized shape (product.price already a number).
       prisma.order.create.mockResolvedValue({
         id: "order-1",
         userId,

@@ -74,7 +74,7 @@ export class CartService {
   async requireNonEmpty(userId: string) {
     const cart = await this.getRaw(userId);
     if (cart.items.length === 0) throw new BadRequestException("Cart is empty");
-    return cart;
+    return this.serialize(cart);
   }
 
   clear(cartId: string) {
