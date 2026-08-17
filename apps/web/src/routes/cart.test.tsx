@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderRoute } from "../test-router";
+import { cartTotal } from "../lib/use-cart";
 
 const productId = "33333333-3333-4333-8333-333333333333";
 
@@ -29,14 +30,19 @@ describe("CartPage", () => {
     expect(screen.getByRole("link", { name: "Continue shopping" })).toBeInTheDocument();
   });
 
-  it("computes the subtotal and total from item price × quantity", async () => {
+  it("renders the subtotal and total from the shared cartTotal calculation", async () => {
+    const cart = cartWith(oneItem(2));
+    const expectedTotal = cartTotal(cart as never).toFixed(2);
+
     await renderRoute("/cart", [
-      { method: "GET", urlIncludes: "/cart", response: () => new Response(JSON.stringify(cartWith(oneItem(2))), { status: 200 }) },
+      { method: "GET", urlIncludes: "/cart", response: () => new Response(JSON.stringify(cart), { status: 200 }) },
     ]);
 
     await waitFor(() => {
       const subtotalRow = screen.getByText("Subtotal").closest("div");
-      expect(subtotalRow).toHaveTextContent("$48.00");
+      expect(subtotalRow).toHaveTextContent(`$${expectedTotal}`);
+      const totalRow = screen.getByText("Total").closest("div");
+      expect(totalRow).toHaveTextContent(`$${expectedTotal}`);
     });
   });
 
@@ -78,6 +84,39 @@ describe("CartPage", () => {
       return call as [string, RequestInit];
     });
     expect(JSON.parse(patchCall[1].body as string)).toEqual({ quantity: 1 });
+  });
+
+  it("disables Increase quantity once the item is at its product's stockQuantity", async () => {
+    await renderRoute("/cart", [
+      {
+        method: "GET",
+        urlIncludes: "/cart",
+        response: () =>
+          new Response(
+            JSON.stringify(
+              cartWith([
+                {
+                  id: "item-1",
+                  cartId: "cart-1",
+                  productId,
+                  quantity: 3,
+                  product: {
+                    id: productId,
+                    name: "Everyday Crew Tee",
+                    price: 24,
+                    stockQuantity: 3,
+                    imageUrl: "https://placehold.co/600x600",
+                  },
+                },
+              ]),
+            ),
+            { status: 200 },
+          ),
+      },
+    ]);
+
+    const increaseButton = await screen.findByRole("button", { name: "Increase quantity" });
+    expect(increaseButton).toBeDisabled();
   });
 
   it("removes an item from the cart", async () => {

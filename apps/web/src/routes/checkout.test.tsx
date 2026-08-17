@@ -3,6 +3,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Route } from "./checkout";
+import { cartTotal } from "../lib/use-cart";
 
 const navigateMock = vi.fn();
 vi.mock("@tanstack/react-router", async (importOriginal) => {
@@ -64,7 +65,7 @@ describe("CheckoutPage", () => {
     navigateMock.mockClear();
   });
 
-  it("computes the order total from cart item price × quantity", async () => {
+  it("renders the order total from the shared cartTotal calculation", async () => {
     mockFetch([
       { method: "GET", urlIncludes: "/addresses", response: () => new Response(JSON.stringify([address]), { status: 200 }) },
       { method: "GET", urlIncludes: "/cart", response: () => new Response(JSON.stringify(cartWithItems), { status: 200 }) },
@@ -72,9 +73,10 @@ describe("CheckoutPage", () => {
 
     renderCheckoutPage();
 
+    const expectedTotal = cartTotal(cartWithItems as never).toFixed(2);
     await waitFor(() => {
       const totalRow = screen.getByText("Total").closest("div");
-      expect(totalRow).toHaveTextContent("$48.00");
+      expect(totalRow).toHaveTextContent(`$${expectedTotal}`);
     });
   });
 

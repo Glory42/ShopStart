@@ -1,7 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { Cart } from "@shopstart/types";
-import { api } from "../lib/api-client";
+import { useCart } from "../lib/use-cart";
 import { Button, buttonClasses } from "../components/button";
 
 export const Route = createFileRoute("/cart")({
@@ -9,22 +7,7 @@ export const Route = createFileRoute("/cart")({
 });
 
 function CartPage() {
-  const queryClient = useQueryClient();
-  const { data: cart, isLoading } = useQuery<Cart>({
-    queryKey: ["cart"],
-    queryFn: () => api.get<Cart>("/cart"),
-  });
-
-  const updateQuantity = useMutation({
-    mutationFn: ({ productId, quantity }: { productId: string; quantity: number }) =>
-      api.patch(`/cart/items/${productId}`, { quantity }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cart"] }),
-  });
-
-  const removeItem = useMutation({
-    mutationFn: (productId: string) => api.delete(`/cart/items/${productId}`),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cart"] }),
-  });
+  const { cart, isLoading, total, setQuantity, removeItem } = useCart();
 
   if (isLoading) {
     return <div className="px-5 py-24 text-center text-[15px] text-graphite">Loading cart...</div>;
@@ -45,11 +28,6 @@ function CartPage() {
       </div>
     );
   }
-
-  const total = cart.items.reduce(
-    (sum, item) => sum + (item.product?.price ?? 0) * item.quantity,
-    0,
-  );
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-14">
@@ -92,12 +70,7 @@ function CartPage() {
               </div>
               <div className="flex items-center rounded-full border border-hairline">
                 <button
-                  onClick={() =>
-                    updateQuantity.mutate({
-                      productId: item.productId,
-                      quantity: Math.max(1, item.quantity - 1),
-                    })
-                  }
+                  onClick={() => setQuantity(item, item.quantity - 1)}
                   className="h-9 w-9 text-[15px] text-ink hover:text-graphite"
                   aria-label="Decrease quantity"
                 >
@@ -107,13 +80,12 @@ function CartPage() {
                   {item.quantity}
                 </span>
                 <button
-                  onClick={() =>
-                    updateQuantity.mutate({
-                      productId: item.productId,
-                      quantity: item.quantity + 1,
-                    })
+                  onClick={() => setQuantity(item, item.quantity + 1)}
+                  disabled={
+                    item.product?.stockQuantity !== undefined &&
+                    item.quantity >= item.product.stockQuantity
                   }
-                  className="h-9 w-9 text-[15px] text-ink hover:text-graphite"
+                  className="h-9 w-9 text-[15px] text-ink hover:text-graphite disabled:opacity-40 disabled:pointer-events-none"
                   aria-label="Increase quantity"
                 >
                   +
