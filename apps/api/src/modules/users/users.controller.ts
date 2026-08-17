@@ -1,10 +1,9 @@
 import { Body, Controller, Get, Param, Patch, UseGuards } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
-import { updateUserSchema, Role, type UpdateUserInput } from "@shopstart/types";
+import { updateUserSchema, type UpdateUserInput } from "@shopstart/types";
 import { ZodValidationPipe } from "../../common/pipes/zod-validation.pipe";
 import { CurrentUser } from "../../common/decorators/current-user.decorator";
-import { Roles } from "../../common/decorators/roles.decorator";
-import { RolesGuard } from "../../common/guards/roles.guard";
+import { AdminOnly } from "../../common/decorators/admin-only.decorator";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import type { AuthenticatedUser } from "../auth/auth.types";
 import { UsersService } from "./users.service";
@@ -29,15 +28,13 @@ export class UsersController {
   }
 
   @Get()
-  @UseGuards(RolesGuard)
-  @Roles(Role.ADMIN)
+  @AdminOnly()
   findAll() {
     return this.users.findAll();
   }
 
   @Get(":id")
-  @UseGuards(RolesGuard)
-  @Roles(Role.ADMIN)
+  @AdminOnly()
   findOne(@Param("id") id: string) {
     return this.users.findById(id);
   }
