@@ -128,12 +128,7 @@ export class OrdersService {
     const order = await this.prisma.order.findUnique({ where: { id: orderId } });
     if (!order) throw new NotFoundException("Order not found");
 
-    const allowed = ORDER_STATUS_TRANSITIONS[order.status as OrderStatus];
-    if (!allowed.includes(nextStatus)) {
-      throw new BadRequestException(
-        `Cannot transition order from ${order.status} to ${nextStatus}`,
-      );
-    }
+    this.assertValidTransition(order.status as OrderStatus, nextStatus);
 
     const updated = await this.prisma.order.update({
       where: { id: orderId },
@@ -141,5 +136,32 @@ export class OrdersService {
       include: ORDER_INCLUDE,
     });
     return this.serialize(updated);
+  }
+
+  /**
+   * The same transition guard as updateStatus, but taking a Prisma
+   * transaction client so callers that need the status write to
+   * participate in their own transaction (e.g. PaymentsService writing a
+   * Payment row alongside the Order update) don't have to write
+   * Order.status directly and bypass the guard.
+   */
+  async transitionStatus(
+    tx: Prisma.TransactionClient,
+    orderId: string,
+    nextStatus: OrderStatus,
+  ) {
+    const order = await tx.order.findUnique({ where: { id: orderId } });
+    if (!order) throw new NotFoundException("Order not found");
+
+    this.assertValidTransition(order.status as OrderStatus, nextStatus);
+
+    await tx.order.update({ where: { id: orderId }, data: { status: nextStatus } });
+  }
+
+  private assertValidTransition(current: OrderStatus, next: OrderStatus) {
+    const allowed = ORDER_STATUS_TRANSITIONS[current];
+    if (!allowed.includes(next)) {
+      throw new BadRequestException(`Cannot transition order from ${current} to ${next}`);
+    }
   }
 }
