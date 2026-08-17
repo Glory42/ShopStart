@@ -1,8 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import type { Address, Cart, CreateAddressInput, Order } from "@shopstart/types";
+import type { Address, CreateAddressInput, Order } from "@shopstart/types";
 import { api } from "../lib/api-client";
+import { cartTotal, useCartQuery } from "../lib/use-cart";
 import { Button } from "../components/button";
 import { Input } from "../components/input";
 import { cn } from "../lib/cn";
@@ -27,10 +28,7 @@ function CheckoutPage() {
     queryKey: ["addresses"],
     queryFn: () => api.get<Address[]>("/addresses"),
   });
-  const { data: cart } = useQuery<Cart>({
-    queryKey: ["cart"],
-    queryFn: () => api.get<Cart>("/cart"),
-  });
+  const { data: cart } = useCartQuery();
 
   const [selectedAddressId, setSelectedAddressId] = useState<string>("");
   const [newAddress, setNewAddress] = useState(emptyAddress);
@@ -54,9 +52,7 @@ function CheckoutPage() {
     },
   });
 
-  const total =
-    cart?.items.reduce((sum, item) => sum + (item.product?.price ?? 0) * item.quantity, 0) ??
-    0;
+  const total = cartTotal(cart);
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-14">

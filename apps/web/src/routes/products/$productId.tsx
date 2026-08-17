@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import type { Product, Review } from "@shopstart/types";
 import { api } from "../../lib/api-client";
+import { useCartMutations } from "../../lib/use-cart";
 import { Button } from "../../components/button";
 
 type ReviewWithUser = Review & { user: { username: string } };
@@ -20,17 +20,21 @@ export const Route = createFileRoute("/products/$productId")({
 
 function ProductDetailPage() {
   const { product, reviews } = Route.useLoaderData();
-  const queryClient = useQueryClient();
   const [added, setAdded] = useState(false);
 
-  const addToCart = useMutation({
-    mutationFn: () => api.post("/cart/items", { productId: product.id, quantity: 1 }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
-      setAdded(true);
-      setTimeout(() => setAdded(false), 2000);
-    },
-  });
+  const { addItem } = useCartMutations();
+
+  function handleAddToCart() {
+    addItem.mutate(
+      { productId: product.id },
+      {
+        onSuccess: () => {
+          setAdded(true);
+          setTimeout(() => setAdded(false), 2000);
+        },
+      },
+    );
+  }
 
   const averageRating =
     reviews.length > 0
@@ -95,8 +99,8 @@ function ProductDetailPage() {
               <Button
                 variant="primary"
                 className="w-full sm:w-auto"
-                onClick={() => addToCart.mutate()}
-                disabled={product.stockQuantity === 0 || addToCart.isPending}
+                onClick={handleAddToCart}
+                disabled={product.stockQuantity === 0 || addItem.isPending}
               >
                 {product.stockQuantity === 0
                   ? "Out of stock"
