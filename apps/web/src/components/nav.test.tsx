@@ -49,6 +49,7 @@ describe("Nav", () => {
 
     await waitFor(() => expect(screen.getByRole("link", { name: "Log in" })).toBeInTheDocument());
     expect(screen.queryByRole("link", { name: "Orders" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Wishlists" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Log out" })).not.toBeInTheDocument();
   });
 
@@ -64,6 +65,7 @@ describe("Nav", () => {
       expect(screen.getByRole("button", { name: "Log out" })).toBeInTheDocument(),
     );
     expect(screen.getByRole("link", { name: "Orders" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Wishlists" })).toBeInTheDocument();
   });
 
   it("shows the cart item count when the cart has items", async () => {

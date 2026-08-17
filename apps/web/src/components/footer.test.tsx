@@ -20,6 +20,10 @@ describe("Footer", () => {
       "href",
       "/account/orders",
     );
+    expect(screen.getByRole("link", { name: "Wishlists" })).toHaveAttribute(
+      "href",
+      "/account/wishlists",
+    );
     expect(screen.getByRole("link", { name: "Log in" })).toHaveAttribute("href", "/login");
   });
 

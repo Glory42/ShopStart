@@ -13,6 +13,15 @@ below is the *current* source of truth; the paper band axis changed from
 light to dark but genre, macrostructures, nav/footer archetypes, typography,
 motion, and CTA voice are unchanged. Diversification axes updated accordingly.
 
+**Revision (2026-08-17):** added the Wishlist save toggle (new CTA voice
+subsection below) plus a third nav/footer link row entry (`/account/wishlists`)
+for issue #15. This is an amendment, not a redesign — the existing four CTA
+voices (primary/secondary/tertiary/ghost) are all pill-shaped commitments to
+an action ("Add to bag", "Place order"); "save" is a toggle a shopper flips
+and reconsiders, not a commitment, so it gets its own icon-toggle voice
+rather than being force-fit into "tertiary". Genre, theme, typography,
+motion, and every other archetype are unchanged.
+
 Scope: the customer-facing storefront (`apps/web`) only. `apps/admin` is a
 separate authenticated tool and is out of scope for this pass.
 
@@ -103,6 +112,39 @@ classes instead of composing with them.
 - Tertiary: bordered pill, transparent fill, `--color-rule` border.
 - Ghost/link CTA: accent-colored text + underline on hover, no box.
 
+## Wishlist save toggle
+Added 2026-08-17 for issue #15 (storefront wishlist UI) — a fifth, distinct
+interactive voice for the one save/un-save action, not a variant of the four
+pill CTAs above.
+
+- **Glyph, not a new icon set.** ♥ filled / ♡ outline — the same
+  typographic-glyph iconography the product-detail page already uses for
+  star ratings (★/☆), so this doesn't introduce an icon library or SVG set
+  the project didn't already have.
+- **Icon form** (product cards): a circular button in the same slot/treatment
+  as the existing out-of-stock badge — `bg-canvas/85` + backdrop-blur, top
+  corner of the image plate (opposite corner from the out-of-stock badge, so
+  the two never collide). `--color-graphite` outline, `--color-accent` when
+  saved. Rendered as a *sibling* of the card's `<Link>`, not nested inside
+  it — nesting a `<button>` inside the card's own `<a>` would be invalid
+  interactive-in-interactive markup.
+- **Labeled form** (product-detail buy-box): a bordered pill matching
+  Tertiary's weight (`--color-rule` border, transparent fill) sitting beside
+  the primary "Add to bag" pill — border/text flip to `--color-accent` when
+  saved.
+- **Signed-out state:** the toggle becomes a plain link to `/login` (still
+  the outline glyph) rather than a disabled control or a silent no-op —
+  consistent with the rest of the app not gating navigation behind
+  client-side auth checks.
+- **Picking a wishlist:** clicking the toggle opens a small popover
+  (`--color-paper-3` — the surface this file already reserved for "a
+  further-elevated surface, e.g. modals" — used here since the project has
+  no modal component yet and a popover is the lighter-weight fit for a
+  one-off "which list?" choice) listing the user's wishlists as checkboxes
+  (a product can live in more than one list) plus an inline
+  create-a-new-wishlist field. No page navigation, no toast — silent
+  success per the existing Microinteractions stance, same as cart.
+
 ## Nav archetype
 **N6 · Newspaper masthead** (revised 2026-08-13, replacing N1b — user
 feedback: the three-section bar read as flat in shape, plainness, and
@@ -111,7 +153,8 @@ color/contrast all at once). N6 is this project's genre's own default
 one-off swap. Structure: a thin mono small-caps utility line stands in for
 N6's issue-date line (Log in/out left-of-center, Cart with live count
 right-of-center, joined by a middot) · a large centered wordmark anchors the
-page · Shop/Orders (when authenticated) sit beneath as the link row · a
+page · Shop/Orders/Wishlists (when authenticated) sit beneath as the link
+row · a
 double rule closes the block, with the bottom rule rendered in
 `--color-accent` as the one signature color move (was all-hairline grey
 before). Chrome is `bg-canvas` (true black), not the previous
@@ -144,7 +187,7 @@ real destinations to justify it honestly).
   statement + an honest visual index of the catalog, not a SaaS feature
   pitch). Enrichment: none (typography + real product imagery only).
 - **App pages** (`/products`, `/products/$id`, `/cart`, `/checkout`,
-  `/login`, `/register`, `/account/orders`): no macrostructure, no
+  `/login`, `/register`, `/account/orders`, `/account/wishlists`): no macrostructure, no
   enrichment — function carries the page, per the app-page allowance below.
   These pages consume the same tokens, type, CTA voice, and nav/footer as the
   marketing page; they do not get their own structural fingerprint.
