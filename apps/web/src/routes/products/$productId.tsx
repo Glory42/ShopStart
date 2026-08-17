@@ -4,6 +4,7 @@ import type { Product, Review } from "@shopstart/types";
 import { api } from "../../lib/api-client";
 import { useCartMutations } from "../../lib/use-cart";
 import { Button } from "../../components/button";
+import { WishlistButton } from "../../components/wishlist-button";
 
 type ReviewWithUser = Review & { user: { username: string } };
 
@@ -96,18 +97,21 @@ function ProductDetailPage() {
             </p>
 
             <div className="mt-8">
-              <Button
-                variant="primary"
-                className="w-full sm:w-auto"
-                onClick={handleAddToCart}
-                disabled={product.stockQuantity === 0 || addItem.isPending}
-              >
-                {product.stockQuantity === 0
-                  ? "Out of stock"
-                  : added
-                    ? "Added to bag"
-                    : "Add to bag"}
-              </Button>
+              <div className="flex flex-wrap items-center gap-3">
+                <Button
+                  variant="primary"
+                  className="w-full sm:w-auto"
+                  onClick={handleAddToCart}
+                  disabled={product.stockQuantity === 0 || addItem.isPending}
+                >
+                  {product.stockQuantity === 0
+                    ? "Out of stock"
+                    : added
+                      ? "Added to bag"
+                      : "Add to bag"}
+                </Button>
+                <WishlistButton productId={product.id} variant="button" />
+              </div>
               <p className="mt-3 text-[13px] text-graphite">
                 {product.stockQuantity > 0
                   ? `${product.stockQuantity} in stock — ships in 2-3 business days`
