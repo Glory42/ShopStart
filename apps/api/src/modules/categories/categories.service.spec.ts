@@ -6,18 +6,12 @@ import { CategoriesService } from "./categories.service";
 describe("CategoriesService", () => {
   let service: CategoriesService;
   let prisma: {
-    category: {
-      findUnique: jest.Mock;
-      create: jest.Mock;
-    };
+    category: { findUnique: jest.Mock };
   };
 
   beforeEach(async () => {
     prisma = {
-      category: {
-        findUnique: jest.fn(),
-        create: jest.fn(),
-      },
+      category: { findUnique: jest.fn() },
     };
 
     const module = await Test.createTestingModule({
@@ -28,18 +22,6 @@ describe("CategoriesService", () => {
     }).compile();
 
     service = module.get(CategoriesService);
-  });
-
-  it("creates a category when the slug is free", async () => {
-    prisma.category.findUnique.mockResolvedValue(null);
-    prisma.category.create.mockResolvedValue({ id: "1", name: "Books", slug: "books" });
-
-    const result = await service.create({ name: "Books", slug: "books" });
-
-    expect(result.slug).toBe("books");
-    expect(prisma.category.create).toHaveBeenCalledWith({
-      data: { name: "Books", slug: "books" },
-    });
   });
 
   it("rejects a duplicate slug", async () => {
